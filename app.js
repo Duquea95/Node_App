@@ -5,7 +5,7 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const db = pgp('postgres://Anthony@localhost:5432/project2_users');
+// const db = pgp('postgres://Anthony@localhost:5432/project2_users');
 
 app.engine('html',mustacheExpress())
 app.set('view engine', 'html');
@@ -21,16 +21,9 @@ app.use(session({
   cookie: { secure: false }
 }))
 
-app.get('/', function(req,res){
+app.set('port', (process.env.PORT || 8000));
 
-    if (!req.session.user){
-
-    }
-    res.render('index')
-})
-
-
-app.listen(8000, function(){
+app.listen(app.get('port'), function(){
 
     console.log("Live on port 8000")
 });
@@ -38,3 +31,5 @@ app.listen(8000, function(){
 app.use(function(err, req, res, next){
   res.status(err.status || 500);
 });
+
+const router = require('./router')(app);
